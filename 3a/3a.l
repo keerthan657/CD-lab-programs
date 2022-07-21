@@ -6,7 +6,7 @@
 %%
 
 "//"[ a-zA-Z0-9]* {printf("single-line comment found\n");}
-"/*"([ a-zA-Z0-9]|\n)*"*/" {printf("multi-line comment found\n");}  // fix this plz
+[/][*](.|\n)*[*][/] {printf("multi-line comment found\n");}
 . {fprintf(yyout, "%s", yytext);}
 
 %%
