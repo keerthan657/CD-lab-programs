@@ -44,3 +44,8 @@ cc lex.yy.c y.tab.c -ll -ly && ./a.out
 lex file.c &&
 cc lex.yy.c && ./a.out
 </code>
+
+### Applicable for 5
+<code>
+cc file.c && ./a.out
+</code>
