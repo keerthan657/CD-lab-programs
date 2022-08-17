@@ -35,13 +35,13 @@
 
 ### Applicable for 1b, 2b, 3b, 4b, 6, 7, 8
 <code>
-lex file.c && yacc -d file.y &&
+lex file.l && yacc -d file.y &&
 cc lex.yy.c y.tab.c -ll -ly && ./a.out
 </code>
 
 ### Applicable for 1a, 2a, 3a, 4a
 <code>
-lex file.c &&
+lex file.l &&
 cc lex.yy.c && ./a.out
 </code>
 
