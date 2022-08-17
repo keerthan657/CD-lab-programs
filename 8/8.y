@@ -9,7 +9,7 @@ int yylex();
 char AddToTable(char,char,char);
 char table[100][4]; int currIndex=0;
 char temp = 'A';
-int seen[128];
+
 %}
 
 %token NUMBER LETTER
@@ -21,13 +21,39 @@ statement: LETTER '=' expr {AddToTable((char)$1,(char)$3,'=');}
          | expr
          ;
 expr: expr '+' expr {$$ = AddToTable((char)$1,(char)$3,'+');}
-		| expr '-' expr {$$ = AddToTable((char)$1,(char)$3,'-');}
-		| expr '*' expr {$$ = AddToTable((char)$1,(char)$3,'*');}
-		| expr '/' expr {$$ = AddToTable((char)$1,(char)$3,'/');}
-		| '(' expr ')' {$$ = (char)$2;}
-		| NUMBER {$$ = $1;}
-		| LETTER {$$ = (char)$1;}
-		;
+    | expr '-' expr {$$ = AddToTable((char)$1,(char)$3,'-');}
+    | expr '*' expr {$$ = AddToTable((char)$1,(char)$3,'*');}
+    | expr '/' expr {$$ = AddToTable((char)$1,(char)$3,'/');}
+    | '(' expr ')' {$$ = (char)$2;}
+    | NUMBER {$$ = (char)$1;}
+    | LETTER {$$ = $1;}
+    ;
+    
+// E -> E + E | E - E | E * E | E / E | (E) | num | id
+		
+/*
+GRAMMAR having operator precedence:
+
+S : LETTER '=' expr {AddToTable((char)$1,(char)$3,'=');}
+  | expr
+  ;
+expr : expr '+' term {$$ = AddToTable((char)$1,(char)$3,'+');}
+     | expr '-' term {$$ = AddToTable((char)$1,(char)$3,'-');}
+     | term {$$ = $1;}
+     ;
+term : term '*' fac  {$$ = AddToTable((char)$1,(char)$3,'*');}
+     | term '/' fac  {$$ = AddToTable((char)$1,(char)$3,'/');}
+     | fac {$$ = $1;}
+     ;
+fac : '(' expr ')' {$$ = $2;}
+    | NUMBER {$$ = (char)$1;}
+    | LETTER {$$ = $1;}
+    ;
+
+// E -> E + T | E - T | T
+// T -> T * F | T / F | F
+// F -> (E) | num | id
+*/
 %%
 
 void yyerror(char *s)
@@ -71,7 +97,7 @@ void convert()
 		}
 		else if(table[i][2]=='=')
 		{
-			printf("\nASSIGN Reg%c %c", table[i][1], table[i][0]);
+			printf("\nSTR Reg%c [%c]", table[i][1], table[i][0]);
 		}
 	}
 	printf("\n");
